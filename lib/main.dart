@@ -15,7 +15,7 @@ class VibeFinder extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => VibeFinderProvider())
+        ChangeNotifierProvider(create: (context)=> VibeFinderProvider())
       ],
       child: MaterialApp(
         themeMode: ThemeMode.light,

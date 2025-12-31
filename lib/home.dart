@@ -26,7 +26,7 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
  Column(
     mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(child: Text("Enter Your Mode Today:", 
+          Center(child: Text("Enter Your Mood Today:", 
           style: Theme.of(context).textTheme.bodyLarge,
           )),
           const SizedBox(height: 20),
@@ -53,13 +53,15 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
                onChanged: (String? newvalue){
                 setState(() {
                  _dropdownvalue = newvalue!;
-               
-                 context.read<VibeFinderProvider>().addMood(mood: newvalue);
+                context.read<VibeFinderProvider>().changeMood(newvalue);
+            
                 });
                }),
           ),
           const SizedBox(height: 25),
-        Text("Your current Mood is:${context.watch<VibeFinderProvider>().currentmood}")
+        Text("Your current Mood is:${context.watch<VibeFinderProvider>().currentmood}",
+        style: Theme.of(context).textTheme.bodySmall,
+        )
         ],
       );
 }

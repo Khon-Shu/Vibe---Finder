@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-class VibeFinderProvider extends ChangeNotifier {
+class VibeFinderProvider extends ChangeNotifier{
+  String? currentmood;
 
-
-    String? currentmood;    
-
-    void addMood({ required String mood} ) async{
-      currentmood = mood;
-      notifyListeners();
-    }
+  void changeMood(String? mood){
+    currentmood = mood;
+    notifyListeners();
+  }
 }
