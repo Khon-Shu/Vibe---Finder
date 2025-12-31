@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vibefinder/main.dart';
+import 'package:vibefinder/userpage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -10,9 +11,16 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _selectedindex = 0;
-  List<Widget> _optionWidgets =<Widget>[
-
+  List<Widget> optionWidgets =[
+    content(),
+    Userpage()
   ];
+
+    void onTap(int index){
+      setState(() {
+        _selectedindex = index;
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +31,10 @@ class _HomepageState extends State<Homepage> {
         ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: Column(
-        children: [
-          Text("Enter Your Mode for Today:"),
-        ],
-      ),
+   body: optionWidgets[_selectedindex],
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedindex,
+        onTap: onTap,
         items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -42,4 +48,11 @@ class _HomepageState extends State<Homepage> {
            ])
     );
   }
+}
+Widget content(){
+  return Column(
+        children: [
+          Text("Enter Your Mode for Today:"),
+        ],
+      );
 }
