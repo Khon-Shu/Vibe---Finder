@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:vibefinder/Provider%20class/vibe_finder_provider.dart';
 import 'package:vibefinder/homepage.dart';
 
 void main() {
@@ -11,31 +13,46 @@ class VibeFinder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-     debugShowCheckedModeBanner: false,
-     theme: ThemeData(
-      colorScheme: const ColorScheme(
-          brightness: Brightness.light,
-          primary: Color(0xFF02C57A),
-
-          onPrimary: Colors.white,
-          secondary: Color(0xFFF8FE06),
-          onSecondary: Colors.white,
-          error: Color(0xFFEF4444),
-          onError: Colors.white,
-         
-          surface: Color(0xFFF9FAFB),       // Cards
-          onSurface: Color(0xFF1F2937),
-        ),
-        textTheme: GoogleFonts.montserratTextTheme().copyWith(
-          titleLarge:GoogleFonts.montserrat(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => VibeFinderProvider())
+      ],
+      child: MaterialApp(
+        themeMode: ThemeMode.light,
+       debugShowCheckedModeBanner: false,
+       theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: Color(0xFF02C57A),
+      
+            onPrimary: Colors.white,
+            secondary: Color(0xFFF8FE06),
+            onSecondary: Colors.white,
+            error: Color(0xFFEF4444),
+            onError: Colors.white,
+           
+            surface: Color(0xFFF9FAFB),       // Cards
+            onSurface: Color(0xFF1F2937),
+          ),
+          textTheme: GoogleFonts.montserratTextTheme().copyWith(
+            titleLarge:GoogleFonts.montserrat(
+              fontWeight: FontWeight.bold,
+              fontSize: 20
+            ),
+          bodyLarge: GoogleFonts.montserrat(
             fontWeight: FontWeight.bold,
-            fontSize: 20
+            fontSize: 25
+          ),
+          bodySmall: GoogleFonts.montserrat(
+            fontWeight: FontWeight.bold,
+            fontSize: 16
           )
-           )
-        ),
-        
-      home: const Homepage(),
+             )
+          ),
+          
+        home: const Homepage(),
+      ),
     );
   }
 }

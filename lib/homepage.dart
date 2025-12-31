@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vibefinder/home.dart';
 import 'package:vibefinder/main.dart';
 import 'package:vibefinder/userpage.dart';
 
@@ -12,7 +13,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int _selectedindex = 0;
   List<Widget> optionWidgets =[
-    content(),
+    vibeFinderHome(),
     Userpage()
   ];
 
@@ -48,11 +49,4 @@ class _HomepageState extends State<Homepage> {
            ])
     );
   }
-}
-Widget content(){
-  return Column(
-        children: [
-          Text("Enter Your Mode for Today:"),
-        ],
-      );
 }
