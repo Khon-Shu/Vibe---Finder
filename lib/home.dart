@@ -23,6 +23,7 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
  late String _dropdownvalue ;
  late String _currentLatitude;
  late String _currentLongitude;
+ 
 
   Future<void>getlocation()async{
     LocationPermission permission = await Geolocator.checkPermission();
@@ -34,7 +35,7 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
     }
     else{
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high
+        
       );
       _currentLatitude = position.latitude.toString();
       _currentLongitude = position.longitude.toString();
@@ -53,6 +54,7 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<VibeFinderProvider>();
+    String? imageURL;
     return  Column(
     mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -116,22 +118,31 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
               final prop = place['properties'];
               final name = prop['name'] ?? "Unknown";
             final lat = prop['lat'];
-final lon = prop['lon'];
-final distanceInMeters = Geolocator.distanceBetween(
-  double.parse(_currentLatitude),
-  double.parse(_currentLongitude),
-  lat,
-  lon,
-);
-final distance = "${(distanceInMeters / 1000).toStringAsFixed(2)} km";
-
+              final lon = prop['lon'];
+              final location = prop['formatted'];
+              final distanceInMeters = Geolocator.distanceBetween(
+                double.parse(provider.currentLatitude!),
+                double.parse(provider.currentLongitude!),
+                lat,
+                lon,
+              );
+              final distance = "${(distanceInMeters / 1000).toStringAsFixed(2)} km";
+              final photos = prop['photos'];
+          if (photos is List && photos.isNotEmpty && photos[0]['url'] != null) {
+            imageURL =
+                "${photos[0]['url']}&apiKey=b4dd186c2bcb42289ae48a29bfbb0c96";
+          } else {
+            imageURL = null;
+          }
 
               return Card(
                 margin: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                 child: ListTile(
                   title: Text(name),
-                  subtitle: Text(" Distance: ${distance} "),
-                   leading: Icon(Icons.place, color: Colors.blue),
+                  subtitle: Text(" Distance: ${distance} away \n Location: ${location} "),
+                   leading:  imageURL!= null?
+                   Image.network(imageURL!, width: 50, height: 50, fit: BoxFit.cover):
+                    Icon(Icons.place, color: Colors.blue),
                 ),
               );
             }

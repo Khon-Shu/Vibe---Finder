@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vibefinder/home.dart';
-import 'package:vibefinder/locationrecommender.dart';
+import 'package:vibefinder/maps.dart';
 import 'package:vibefinder/main.dart';
 import 'package:vibefinder/userpage.dart';
 
@@ -15,7 +15,7 @@ class _HomepageState extends State<Homepage> {
   int _selectedindex = 0;
   List<Widget> optionWidgets =[
     vibeFinderHome(),
-    Locationrecommender(),
+    VibeFinderMap(),
     Userpage()
   ];
 
