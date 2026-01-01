@@ -13,8 +13,10 @@ class vibeFinderHome extends StatefulWidget {
 class _vibeFinderHomeState extends State<vibeFinderHome> {
    List<String> _moodlist =<String>[" 😊   Happy", " 😔   Sad", " 😟   Stressed", " ⚡   Energetic", " 😎   Relaxed"];
  late String _dropdownvalue ;
+ late String _currentLatitude;
+ late String _currentLongitude;
 
-  getlocation()async{
+  Future<void>getlocation()async{
     LocationPermission permission = await Geolocator.checkPermission();
     if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
       ScaffoldMessenger.of(context).showSnackBar(
@@ -24,6 +26,10 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
     }
     else{
       Position position = await Geolocator.getCurrentPosition();
+      _currentLatitude = position.latitude.toString();
+      _currentLongitude = position.longitude.toString();
+     
+
     }
   }
 
@@ -79,9 +85,14 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
         const SizedBox(
           height: 25
         ),
-        ElevatedButton(onPressed: 
-        getlocation()
-        , child: Text("Get The Place Recommendation"))
+        ElevatedButton(onPressed:  () async{
+         await getlocation();
+         setState(() {
+           context.read<VibeFinderProvider>().getCurrentLocation(_currentLatitude, _currentLongitude);
+         });
+        }
+         
+        , child: Text("Get The Place Recommendation "))
         ],
       );
 }
