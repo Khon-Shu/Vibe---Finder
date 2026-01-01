@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:vibefinder/home.dart';
-import 'package:vibefinder/maps.dart';
+
 import 'package:vibefinder/main.dart';
 import 'package:vibefinder/userpage.dart';
-
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:vibefinder/Provider%20class/vibe_finder_provider.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<Homepage> createState() => HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class HomepageState extends State<Homepage> {
   int _selectedindex = 0;
   List<Widget> optionWidgets =[
     vibeFinderHome(),
@@ -54,6 +57,78 @@ class _HomepageState extends State<Homepage> {
          
            
            ])
+    );
+  }
+}
+class VibeFinderMap extends StatefulWidget {
+  const VibeFinderMap({super.key});
+
+  @override
+  State<VibeFinderMap> createState() => _VibeFinderMapState();
+}
+
+class _VibeFinderMapState extends State<VibeFinderMap> {
+  GoogleMapController? _mapController;
+  Set<Marker> _markers = {};
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final provider = context.read<VibeFinderProvider>();
+
+    // If a place is selected, update marker and animate camera
+    if (provider.selectedplace != null) {
+      final place = provider.selectedplace!;
+      final LatLng position = LatLng(place['lat'], place['lon']);
+
+      _markers = {
+        Marker(
+          markerId: MarkerId(place['name']),
+          position: position,
+          infoWindow: InfoWindow(title: place['name']),
+        ),
+      };
+
+      // Animate camera if controller is ready
+      if (_mapController != null) {
+        _mapController!.animateCamera(CameraUpdate.newLatLngZoom(position, 16));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<VibeFinderProvider>();
+
+    if (provider.currentLatitude == null || provider.currentLongitude == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final double latitude = double.parse(provider.currentLatitude!);
+    final double longitude = double.parse(provider.currentLongitude!);
+
+    return GoogleMap(
+      initialCameraPosition: CameraPosition(
+        target: LatLng(latitude, longitude),
+        zoom: 15,
+      ),
+      onMapCreated: (controller) {
+        _mapController = controller;
+
+        // If a place is already selected, animate camera
+        if (provider.selectedplace != null) {
+          final place = provider.selectedplace!;
+          _mapController!.animateCamera(
+            CameraUpdate.newLatLngZoom(
+              LatLng(place['lat'], place['lon']),
+              16,
+            ),
+          );
+        }
+      },
+      markers: _markers,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: true,
     );
   }
 }

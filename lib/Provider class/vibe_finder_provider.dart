@@ -11,6 +11,8 @@ class VibeFinderProvider extends ChangeNotifier{
   final String geoapifykey ="b4dd186c2bcb42289ae48a29bfbb0c96";
   List<String> selectedcategories = [];
   List<dynamic> nearbyplaces = [];
+  Map<String, dynamic>? selectedplace;
+
  Map<String, List<String>> moodToCategory = {
     "Happy": ["catering.cafe", "catering.restaurant", "leisure.park"],
     "Sad": ["leisure.park", "tourism.museum", "amenity.library"],
@@ -50,6 +52,11 @@ class VibeFinderProvider extends ChangeNotifier{
   void getCurrentLocation(String? latitude, String? longitude){
     currentLatitude = latitude;
     currentLongitude = longitude;
+    notifyListeners();
+  }
+
+  void setPlace(Map<String, dynamic> place){
+    selectedplace = place;
     notifyListeners();
   }
 }
