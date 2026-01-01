@@ -11,7 +11,15 @@ class vibeFinderHome extends StatefulWidget {
 }
 
 class _vibeFinderHomeState extends State<vibeFinderHome> {
-   List<String> _moodlist =<String>[" 😊   Happy", " 😔   Sad", " 😟   Stressed", " ⚡   Energetic", " 😎   Relaxed"];
+  
+  List<Map<String, String>> _moodlist = [
+  {"label": "😊 Happy", "key": "Happy"},
+  {"label": "😔 Sad", "key": "Sad"},
+  {"label": "😟 Stressed", "key": "Stressed"},
+  {"label": "⚡ Energetic", "key": "Energetic"},
+  {"label": "😎 Relaxed", "key": "Relaxed"},
+];
+
  late String _dropdownvalue ;
  late String _currentLatitude;
  late String _currentLongitude;
@@ -25,7 +33,9 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
       LocationPermission ask = await Geolocator.requestPermission();
     }
     else{
-      Position position = await Geolocator.getCurrentPosition();
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high
+      );
       _currentLatitude = position.latitude.toString();
       _currentLongitude = position.longitude.toString();
      
@@ -38,12 +48,12 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
   void initState() {
    
     super.initState();
-    _dropdownvalue = _moodlist.first;
+    _dropdownvalue = _moodlist.first["key"]!;
   }
   @override
   Widget build(BuildContext context) {
-    return 
- Column(
+    final provider = context.watch<VibeFinderProvider>();
+    return  Column(
     mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(child: Text("Enter Your Mood Today:", 
@@ -63,10 +73,10 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
               borderRadius: BorderRadius.circular(30),
               initialValue: _dropdownvalue,
               icon: Icon(Icons.arrow_downward),
-              items: _moodlist.map((String value){
+              items: _moodlist.map((mood){
                 return DropdownMenuItem<String>(
-                  value: value,
-                 child: Text(value,
+                  value: mood["key"],
+                 child: Text(mood["label"]!,
                  style: Theme.of(context).textTheme.bodySmall,
                  ));
               }).toList(),
@@ -74,7 +84,7 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
                 setState(() {
                  _dropdownvalue = newvalue!;
                 context.read<VibeFinderProvider>().changeMood(newvalue);
-            
+         
                 });
                }),
           ),
@@ -87,12 +97,46 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
         ),
         ElevatedButton(onPressed:  () async{
          await getlocation();
+         await context.read<VibeFinderProvider>().fetchNearbyPlaces();
          setState(() {
            context.read<VibeFinderProvider>().getCurrentLocation(_currentLatitude, _currentLongitude);
          });
         }
          
-        , child: Text("Get The Place Recommendation "))
+        , child: Text("Get The Place Recommendation ")),
+        const SizedBox(height: 20),
+        Expanded(
+          child: provider.nearbyplaces.isEmpty?
+          Center(child: Text("No Places Found")): 
+
+          ListView.builder(
+            itemCount: provider.nearbyplaces.length,
+            itemBuilder: (context, index) { 
+              final place = provider.nearbyplaces[index];
+              final prop = place['properties'];
+              final name = prop['name'] ?? "Unknown";
+            final lat = prop['lat'];
+final lon = prop['lon'];
+final distanceInMeters = Geolocator.distanceBetween(
+  double.parse(_currentLatitude),
+  double.parse(_currentLongitude),
+  lat,
+  lon,
+);
+final distance = "${(distanceInMeters / 1000).toStringAsFixed(2)} km";
+
+
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                child: ListTile(
+                  title: Text(name),
+                  subtitle: Text(" Distance: ${distance} "),
+                   leading: Icon(Icons.place, color: Colors.blue),
+                ),
+              );
+            }
+          ),
+        )
         ],
       );
 }
