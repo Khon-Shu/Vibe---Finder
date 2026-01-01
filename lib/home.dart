@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:vibefinder/Provider%20class/vibe_finder_provider.dart';
 
@@ -13,10 +14,23 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
    List<String> _moodlist =<String>[" 😊   Happy", " 😔   Sad", " 😟   Stressed", " ⚡   Energetic", " 😎   Relaxed"];
  late String _dropdownvalue ;
 
+  getlocation()async{
+    LocationPermission permission = await Geolocator.checkPermission();
+    if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Location Denied By The User") )
+      );
+      LocationPermission ask = await Geolocator.requestPermission();
+    }
+    else{
+      Position position = await Geolocator.getCurrentPosition();
+    }
+  }
+
 
  @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     _dropdownvalue = _moodlist.first;
   }
@@ -61,7 +75,13 @@ class _vibeFinderHomeState extends State<vibeFinderHome> {
           const SizedBox(height: 25),
         Text("Your current Mood is:${context.watch<VibeFinderProvider>().currentmood}",
         style: Theme.of(context).textTheme.bodySmall,
-        )
+        ),
+        const SizedBox(
+          height: 25
+        ),
+        ElevatedButton(onPressed: 
+        getlocation()
+        , child: Text("Get The Place Recommendation"))
         ],
       );
 }
