@@ -19,7 +19,7 @@ class HomepageState extends State<Homepage> {
   List<Widget> optionWidgets =[
     vibeFinderHome(),
     VibeFinderMap(),
-    Userpage()
+    AboutApp()
   ];
 
     void onTap(int index){
@@ -32,7 +32,7 @@ class HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-  toolbarHeight: 80,
+  toolbarHeight: 70,
   title: Text(
     "Vibe Finder",
     style: Theme.of(context).textTheme.titleLarge,
@@ -48,7 +48,7 @@ class HomepageState extends State<Homepage> {
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Image.asset(
-          "assets/images/logoicon.png",
+          "assets/images/app_icon.png",
           fit: BoxFit.contain,
         ),
       ),
@@ -71,11 +71,11 @@ class HomepageState extends State<Homepage> {
            ),
             BottomNavigationBarItem(
             icon: Icon(Icons.location_pin),
-            label: "Location"),
+            label: "Map"),
            
         BottomNavigationBarItem(
-          icon:Icon(Icons.people),
-          label: "User"
+          icon:Icon(Icons.app_settings_alt_rounded),
+          label: "About App"
           ),
          
            
@@ -242,7 +242,7 @@ class _VibeFinderMapState extends State<VibeFinderMap> {
       return Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))
         ),
         child: Center(
           child: Column(
@@ -266,7 +266,7 @@ class _VibeFinderMapState extends State<VibeFinderMap> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))
       ),
       clipBehavior: Clip.antiAlias,
       child: GoogleMap(

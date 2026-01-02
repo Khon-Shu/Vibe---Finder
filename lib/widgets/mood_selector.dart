@@ -23,12 +23,8 @@ class _MoodSelectorState extends State<MoodSelector> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Choose your vibe:",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey.shade800,
-          ),
+          "Choose your Mood Today:",
+          style: Theme.of(context).textTheme.titleMedium
         ),
         SizedBox(height: 16),
         Container(
@@ -54,11 +50,7 @@ class _MoodSelectorState extends State<MoodSelector> {
             borderRadius: BorderRadius.circular(20),
             value: widget.selectedMood,
             icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade600),
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey.shade800,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(context).textTheme.bodySmall,
             items: widget.moodlist.map((mood) {
               return DropdownMenuItem<String>(
                 value: mood["key"],

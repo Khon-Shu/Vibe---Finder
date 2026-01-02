@@ -27,13 +27,13 @@ class VibeFinder extends StatelessWidget {
   brightness: Brightness.light,
   
   // Primary colors
-  primary: Color.fromARGB(255, 123, 198, 89),           // Olive Green
+  primary: Color(0xFF50C878),           // Olive Green
   onPrimary: Colors.white,
   primaryContainer: Color(0xFF8A9456),  // Lighter olive
   onPrimaryContainer: Color(0xFF1A1D0F),
   
   // Secondary colors
-  secondary: Color(0xFF52B788),         // Changed to complementary green (was too light)
+  secondary: Color.fromARGB(255, 111, 140, 126),         // Changed to complementary green (was too light)
   onSecondary: Colors.white,
   secondaryContainer: Color(0xFFD8F3DC),
   onSecondaryContainer: Color(0xFF1B4332),

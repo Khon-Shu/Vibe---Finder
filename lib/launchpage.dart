@@ -192,9 +192,7 @@ class Launchpage extends StatelessWidget {
         "assets/images/mapbackground.jpg",
         fit: BoxFit.cover,
       ),
-      Container(
-        color: Colors.black.withOpacity(0.2),
-      ),
+     
       Padding(
         padding: EdgeInsets.only(top: 60), // Adjust this value for top spacing
         child: Column(

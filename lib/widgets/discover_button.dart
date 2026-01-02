@@ -53,6 +53,7 @@ class DiscoverButton extends StatelessWidget {
               "Discover Places",
               style: TextStyle(
                 fontSize: 18,
+              
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
