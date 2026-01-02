@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vibefinder/about_app.dart';
 import 'package:vibefinder/firstpage.dart';
 
-import 'package:vibefinder/userpage.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:vibefinder/Provider%20class/vibe_finder_provider.dart';
@@ -32,30 +33,48 @@ class HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-  toolbarHeight: 70,
-  title: Text(
-    "Vibe Finder",
-    style: Theme.of(context).textTheme.titleLarge,
-  ),
-  leading: Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-      
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
+  toolbarHeight: 80,
+  elevation: 0,
+  backgroundColor: Theme.of(context).colorScheme.primary,
+  centerTitle: true,
+
+  title: Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Container(
+        width: 42,
+        height: 42,
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         child: Image.asset(
           "assets/images/app_icon.png",
           fit: BoxFit.contain,
         ),
       ),
-    ),
+      const SizedBox(width: 12),
+      Text(
+        "Vibe Finder",
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              letterSpacing: 0.5,
+            ),
+      ),
+    ],
   ),
-  backgroundColor: Theme.of(context).colorScheme.primary,
 ),
+
    body: Container(
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.primary

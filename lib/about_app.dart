@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutApp extends StatelessWidget {
   const AboutApp({super.key});
@@ -8,595 +8,204 @@ class AboutApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8FAFC),
-      body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))
-        ),
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              expandedHeight: 180,
-              backgroundColor: Color(0xFF50C878),
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF50C878), Color(0xFF3BA66A)],
-                    ),
-                  ),
-                  child: Center(
-                    child: TweenAnimationBuilder(
-                      duration: Duration(milliseconds: 1200),
-                      tween: Tween<double>(begin: 0, end: 1),
-                      curve: Curves.elasticOut,
-                      builder: (context, value, child) {
-                        return Transform.scale(
-                          scale: value,
-                          child: child,
-                        );
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 15,
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                            ),
-                            child: Icon(
-                              Icons.location_on_outlined,
-                              size: 40,
-                              color: Color(0xFF50C878),
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            "Vibe Finder",
-                            style: GoogleFonts.poppins(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          Text(
-                            "Version 1.0.0",
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: Colors.white.withOpacity(0.9),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+      backgroundColor: const Color(0xFF50C878),
+      body: Stack(
+        children: [
+          Container(color: const Color(0xFF50C878)),
+
+          Positioned.fill(
+            top: MediaQuery.of(context).padding.top + 16,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
               ),
-              pinned: true,
-              elevation: 0,
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 child: Column(
                   children: [
-                    // App Description Card with Animation
-                    _buildAnimatedCard(
-                      delay: 200,
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
-                            ),
-                          ],
+                    /// LOGO + VERSION
+                    Column(
+                      children: [
+                        Image.asset(
+                          "assets/images/mainlogo.png",
+                          height: 120,
                         ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Version 1.0.0",
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 12),
+    Divider(color: Colors.black),
+    
+                    const SizedBox(height: 12),
+                    /// ABOUT APP
+                    _buildAnimatedCard(
+                      child: _sectionCard(
+                        title: "About Vibe Finder",
+                        icon: Icons.emoji_emotions_outlined,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.emoji_emotions_outlined,
-                                  color: Color(0xFF50C878),
-                                  size: 24,
-                                ),
-                                SizedBox(width: 12),
-                                Text(
-                                  "Discover Your Perfect Vibe",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF1A1A1A),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16),
                             Text(
-                              "Vibe Finder is your personal mood-based location discovery app. Whether you're feeling adventurous, relaxed, social, or focused, we find places that perfectly match your emotional state.",
-                              style: GoogleFonts.inter(
+                              "Vibe Finder is a mood-based location discovery app that helps users find places matching their emotional state—whether relaxed, adventurous, social, or focused.",
+                              style: GoogleFonts.montserrat(
                                 fontSize: 15,
                                 height: 1.6,
-                                color: Color(0xFF666666),
+                                color: const Color(0xFF666666),
                               ),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Wrap(
                               spacing: 12,
                               runSpacing: 12,
-                              children: [
-                                _buildFeatureChip(
-                                  icon: Icons.mood,
-                                  text: "Mood-Based",
-                                ),
-                                _buildFeatureChip(
-                                  icon: Icons.location_on,
-                                  text: "Nearby Places",
-                                ),
-                                _buildFeatureChip(
-                                  icon: Icons.map_outlined,
-                                  text: "Google Maps",
-                                ),
-                                _buildFeatureChip(
-                                  icon: Icons.thumb_up,
-                                  text: "Easy to Use",
-                                ),
+                              children: const [
+                                _FeatureChip(
+                                    icon: Icons.mood, text: "Mood-Based"),
+                                _FeatureChip(
+                                    icon: Icons.location_on,
+                                    text: "Nearby Places"),
+                                _FeatureChip(
+                                    icon: Icons.map_outlined,
+                                    text: "Google Maps"),
+                                _FeatureChip(
+                                    icon: Icons.thumb_up,
+                                    text: "Easy to Use"),
                               ],
                             ),
                           ],
                         ),
                       ),
                     ),
-        
-                    SizedBox(height: 24),
-        
-                    // Developer Profile with Animation
+
+                     const SizedBox(height: 12),
+    Divider(color: Colors.black),
+    
+                    const SizedBox(height: 12),
+
+                    /// DEVELOPER
                     _buildAnimatedCard(
-                      delay: 400,
-                      child: Container(
-                        padding: EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF50C878).withOpacity(0.1),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.person_outline,
-                                    color: Color(0xFF50C878),
-                                    size: 28,
-                                  ),
-                                ),
-                                SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Amit Muni Bajracharya",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF1A1A1A),
-                                        ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        "Flutter Developer",
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          color: Color(0xFF50C878),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            Divider(
-                              height: 1,
-                              color: Colors.grey.shade200,
-                            ),
-                            SizedBox(height: 20),
-                            // Email Section - Simple Display
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF8FAFC),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey.shade200,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.email_outlined,
-                                        color: Color(0xFF50C878),
-                                        size: 20,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Email",
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF50C878),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  GestureDetector(
-                                    onTap: () => _launchEmail(),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            "amitbajracharya4444@gmail.com",
-                                            style: GoogleFonts.inter(
-                                              fontSize: 15,
-                                              color: Colors.blue.shade700,
-                                              decoration: TextDecoration.underline,
-                                            ),
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.open_in_new,
-                                          size: 16,
-                                          color: Colors.blue.shade700,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-        
-                    SizedBox(height: 24),
-        
-                    // Educational Notice with Animation
-                    _buildAnimatedCard(
-                      delay: 600,
-                      child: Container(
-                        padding: EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFF50C878).withOpacity(0.1),
-                              Color(0xFF2196F3).withOpacity(0.1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Color(0xFF50C878).withOpacity(0.2),
-                            width: 1,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF50C878).withOpacity(0.2),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.school_outlined,
-                                    color: Color(0xFF50C878),
-                                    size: 24,
-                                  ),
-                                ),
-                                SizedBox(width: 12),
-                                Text(
-                                  "Educational Project",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF50C878),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              "This app was developed to demonstrate mobile development skills, location services integration, and modern UI/UX design principles. It's a showcase of technical capabilities and user-centered design.",
-                              style: GoogleFonts.inter(
-                                fontSize: 15,
-                                height: 1.6,
-                                color: Color(0xFF666666),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-        
-                    SizedBox(height: 24),
-        
-                    // Feedback Section with Animation
-                    _buildAnimatedCard(
-                      delay: 800,
-                      child: Container(
-                        padding: EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
-                            ),
-                          ],
-                        ),
+                      child: _sectionCard(
+                        title: "Developer",
+                        icon: Icons.person_outline,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF2196F3).withOpacity(0.1),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.feedback_outlined,
-                                    color: Color(0xFF2196F3),
-                                    size: 24,
-                                  ),
-                                ),
-                                SizedBox(width: 12),
-                                Text(
-                                  "Feedback & Support",
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF1A1A1A),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16),
                             Text(
-                              "Your feedback helps improve Vibe Finder. Feel free to share your thoughts, suggestions, or report any issues you encounter.",
-                              style: GoogleFonts.inter(
-                                fontSize: 15,
-                                height: 1.6,
-                                color: Color(0xFF666666),
+                              "Amit Muni Bajracharya",
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: 20),
-                            // Feedback Email
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF8FAFC),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey.shade200,
-                                  width: 1,
-                                ),
+                            const SizedBox(height: 4),
+                            Text(
+                              "Flutter Developer",
+                              style: GoogleFonts.montserrat(
+                                fontSize: 14,
+                                color: const Color(0xFF50C878),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.email_outlined,
-                                        color: Color(0xFF2196F3),
-                                        size: 20,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "Feedback Email",
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF2196F3),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  GestureDetector(
-                                    onTap: () => _launchFeedbackEmail(),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            "amitbajracharya4444@gmail.com",
-                                            style: GoogleFonts.inter(
-                                              fontSize: 15,
-                                              color: Colors.blue.shade700,
-                                              decoration: TextDecoration.underline,
-                                            ),
-                                          ),
-                                        ),
-                                        Icon(
-                                          Icons.open_in_new,
-                                          size: 16,
-                                          color: Colors.blue.shade700,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            ),
+                            const SizedBox(height: 20),
+
+                            /// EMAIL
+                            _emailTile(
+                              email: "amitbajracharya4444@gmail.com",
+                              onTap: _launchEmail,
+                            ),
+
+                            const SizedBox(height: 12),
+
+                            /// GITHUB
+                            _linkTile(
+                              icon: Icons.code,
+                              text: "github.com/Khon-Shu",
+                              onTap: _launchGithub,
                             ),
                           ],
                         ),
                       ),
                     ),
-        
-                    SizedBox(height: 24),
-        
-                    // Copyright Footer
+
+                   const SizedBox(height: 12),
+    Divider(color: Colors.black),
+    
+                    const SizedBox(height: 12),
+                    /// EDUCATIONAL NOTICE
                     _buildAnimatedCard(
-                      delay: 1000,
-                      child: Container(
-                        padding: EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 20,
-                              offset: Offset(0, 10),
-                            ),
-                          ],
+                      child: _sectionCard(
+                        title: "Educational Project",
+                        icon: Icons.school_outlined,
+                        gradient: true,
+                        child: Text(
+                          "This application was created to demonstrate Flutter development skills, location services integration, and modern UI/UX design principles. It serves as an academic and portfolio project.",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            height: 1.6,
+                            color: const Color(0xFF666666),
+                          ),
                         ),
+                      ),
+                    ),
+
+               const SizedBox(height: 12),
+    Divider(color: Colors.black),
+    
+                    const SizedBox(height: 12),
+
+                    /// FEEDBACK
+                    _buildAnimatedCard(
+                      child: _sectionCard(
+                        title: "Feedback & Support",
+                        icon: Icons.feedback_outlined,
+                        iconColor: Colors.blue,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "🎯 Built with Flutter",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF666666),
+                              "Your feedback helps improve the app. Feel free to share suggestions or report issues.",
+                              style: GoogleFonts.montserrat(
+                                fontSize: 15,
+                                height: 1.6,
+                                color: const Color(0xFF666666),
                               ),
                             ),
-                            SizedBox(height: 12),
-                            Divider(
-                              height: 1,
-                              color: Colors.grey.shade200,
-                            ),
-                            SizedBox(height: 12),
-                            Text(
-                              "© 2024 Vibe Finder",
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Educational Project | Version 1.0.0",
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                color: Colors.grey.shade500,
-                              ),
+                            const SizedBox(height: 20),
+                            _emailTile(
+                              email: "amitbajracharya4444@gmail.com",
+                              onTap: _launchFeedbackEmail,
                             ),
                           ],
                         ),
                       ),
                     ),
-        
-                    SizedBox(height: 40),
+
+                    const SizedBox(height: 12),
+    Divider(color: Colors.black),
+    
+                    const SizedBox(height: 12),
+
+                    /// FOOTER
+                    Text(
+                      "© 2026 Vibe Finder • Built with Flutter",
+                      style: GoogleFonts.montserrat(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAnimatedCard({
-    required int delay,
-    required Widget child,
-  }) {
-    return TweenAnimationBuilder(
-      duration: Duration(milliseconds: 600),
-    
-      tween: Tween<double>(begin: 0, end: 1),
-      curve: Curves.easeOutCubic,
-      builder: (context, value, child) {
-        return Transform.translate(
-          offset: Offset(0, (1 - value) * 30),
-          child: Opacity(
-            opacity: value,
-            child: child,
-          ),
-        );
-      },
-      child: child,
-    );
-  }
-
-  Widget _buildFeatureChip({
-    required IconData icon,
-    required String text,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: Color(0xFF50C878).withOpacity(0.08),
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(
-          color: Color(0xFF50C878).withOpacity(0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: Color(0xFF50C878),
-          ),
-          SizedBox(width: 6),
-          Text(
-            text,
-            style: GoogleFonts.inter(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF50C878),
             ),
           ),
         ],
@@ -604,31 +213,203 @@ class AboutApp extends StatelessWidget {
     );
   }
 
-  Future<void> _launchEmail() async {
-    final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: 'amitbajracharya4444@gmail.com',
-      query: 'subject=Vibe%20Finder%20App%20Contact',
+  /// ANIMATION
+  static Widget _buildAnimatedCard({required Widget child}) {
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 500),
+      tween: Tween(begin: 0, end: 1),
+      curve: Curves.easeOut,
+      builder: (context, value, _) {
+        return Transform.translate(
+          offset: Offset(0, (1 - value) * 30),
+          child: Opacity(opacity: value, child: child),
+        );
+      },
     );
-    
-    if (await canLaunchUrl(emailUri)) {
-      await launchUrl(emailUri);
-    } else {
-      debugPrint('Could not launch email');
-    }
   }
 
-  Future<void> _launchFeedbackEmail() async {
-    final Uri emailUri = Uri(
+  /// EMAIL
+  static Future<void> _launchEmail() async {
+    final uri = Uri(
       scheme: 'mailto',
       path: 'amitbajracharya4444@gmail.com',
-      query: 'subject=Vibe%20Finder%20Feedback&body=Hi%20Amit,%0A%0AI%20love%20your%20Vibe%20Finder%20app!%0A%0AHere%27s%20my%20feedback:',
+      query: 'subject=Vibe Finder Contact',
     );
-    
-    if (await canLaunchUrl(emailUri)) {
-      await launchUrl(emailUri);
-    } else {
-      debugPrint('Could not launch feedback email');
-    }
+    await launchUrl(uri);
   }
+
+  static Future<void> _launchFeedbackEmail() async {
+    final uri = Uri(
+      scheme: 'mailto',
+      path: 'amitbajracharya4444@gmail.com',
+      query: 'subject=Vibe Finder Feedback',
+    );
+    await launchUrl(uri);
+  }
+
+  /// GITHUB
+  static Future<void> _launchGithub() async {
+    final uri = Uri.parse("https://github.com/Khon-Shu");
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+}
+
+/// SECTION CARD
+Widget _sectionCard({
+  required String title,
+  required IconData icon,
+  required Widget child,
+  Color iconColor = const Color(0xFF50C878),
+  bool gradient = false,
+}) {
+  return Container(
+    padding: const EdgeInsets.all(24),
+    decoration: BoxDecoration(
+      gradient: gradient
+          ? LinearGradient(
+              colors: [
+                const Color(0xFF50C878).withOpacity(0.1),
+                Colors.blue.withOpacity(0.1),
+              ],
+            )
+          : null,
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.05),
+          blurRadius: 20,
+          offset: const Offset(0, 10),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, color: iconColor),
+            const SizedBox(width: 12),
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        child,
+      ],
+    ),
+  );
+}
+
+/// FEATURE CHIP
+class _FeatureChip extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _FeatureChip({required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFF50C878).withOpacity(0.08),
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(
+          color: const Color(0xFF50C878).withOpacity(0.2),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: const Color(0xFF50C878)),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: GoogleFonts.montserrat(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF50C878),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// EMAIL TILE
+Widget _emailTile({
+  required String email,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.email_outlined, size: 20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              email,
+              style: GoogleFonts.montserrat(
+                fontSize: 14,
+                color: Colors.blue.shade700,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          const Icon(Icons.open_in_new, size: 16),
+        ],
+      ),
+    ),
+  );
+}
+
+/// LINK TILE (GITHUB)
+Widget _linkTile({
+  required IconData icon,
+  required String text,
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.montserrat(
+                fontSize: 14,
+                color: Colors.blue.shade700,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          const Icon(Icons.open_in_new, size: 16),
+        ],
+      ),
+    ),
+  );
 }
