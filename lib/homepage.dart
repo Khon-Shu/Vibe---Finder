@@ -31,13 +31,36 @@ class HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Vibe Finder",
-        style: Theme.of(context).textTheme.titleLarge,
-        ),
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      appBar:  AppBar(
+  toolbarHeight: 80,
+  title: Text(
+    "Vibe Finder",
+    style: Theme.of(context).textTheme.titleLarge,
+  ),
+  leading: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
       ),
-   body: optionWidgets[_selectedindex],
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Image.asset(
+          "assets/images/logoicon.png",
+          fit: BoxFit.contain,
+        ),
+      ),
+    ),
+  ),
+  backgroundColor: Theme.of(context).colorScheme.primary,
+),
+   body: Container(
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.primary
+    ),
+    child: optionWidgets[_selectedindex]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedindex,
         onTap: onTap,
@@ -107,28 +130,35 @@ class _VibeFinderMapState extends State<VibeFinderMap> {
     final double latitude = double.parse(provider.currentLatitude!);
     final double longitude = double.parse(provider.currentLongitude!);
 
-    return GoogleMap(
-      initialCameraPosition: CameraPosition(
-        target: LatLng(latitude, longitude),
-        zoom: 15,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))
       ),
-      onMapCreated: (controller) {
-        _mapController = controller;
-
-        // If a place is already selected, animate camera
-        if (provider.selectedplace != null) {
-          final place = provider.selectedplace!;
-          _mapController!.animateCamera(
-            CameraUpdate.newLatLngZoom(
-              LatLng(place['lat'], place['lon']),
-              16,
-            ),
-          );
-        }
-      },
-      markers: _markers,
-      myLocationEnabled: true,
-      myLocationButtonEnabled: true,
+      clipBehavior: Clip.antiAlias,
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: LatLng(latitude, longitude),
+          zoom: 15,
+        ),
+        onMapCreated: (controller) {
+          _mapController = controller;
+      
+          // If a place is already selected, animate camera
+          if (provider.selectedplace != null) {
+            final place = provider.selectedplace!;
+            _mapController!.animateCamera(
+              CameraUpdate.newLatLngZoom(
+                LatLng(place['lat'], place['lon']),
+                16,
+              ),
+            );
+          }
+        },
+        markers: _markers,
+        myLocationEnabled: true,
+        myLocationButtonEnabled: true,
+      ),
     );
   }
 }

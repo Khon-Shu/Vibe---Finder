@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 class VibeFinderProvider extends ChangeNotifier{
   String? currentmood;
+  String? placedistance;
   String? currentLatitude;
   String? currentLongitude;
   final String geoapifykey ="b4dd186c2bcb42289ae48a29bfbb0c96";
@@ -57,6 +58,7 @@ class VibeFinderProvider extends ChangeNotifier{
 
   void setPlace(Map<String, dynamic> place){
     selectedplace = place;
+   
     notifyListeners();
   }
 }
