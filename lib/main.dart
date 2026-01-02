@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:vibefinder/Provider%20class/vibe_finder_provider.dart';
 import 'package:vibefinder/homepage.dart';
+import 'package:vibefinder/launchpage.dart';
 
 void main() {
   runApp( VibeFinder());
@@ -38,7 +39,11 @@ class VibeFinder extends StatelessWidget {
           textTheme: GoogleFonts.montserratTextTheme().copyWith(
             titleLarge:GoogleFonts.montserrat(
               fontWeight: FontWeight.bold,
-              fontSize: 20
+              fontSize: 25
+            ),
+            titleMedium: GoogleFonts.montserrat(
+              fontWeight: FontWeight.bold,
+              fontSize: 18
             ),
           bodyLarge: GoogleFonts.montserrat(
             fontWeight: FontWeight.bold,
@@ -51,7 +56,7 @@ class VibeFinder extends StatelessWidget {
              )
           ),
           
-        home: const Homepage(),
+        home: const Launchpage(),
       ),
     );
   }
